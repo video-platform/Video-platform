@@ -1,1 +1,1 @@
-# platform-server
+# video-platform
