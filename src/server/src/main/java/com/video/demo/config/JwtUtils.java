@@ -1,4 +1,4 @@
-package com.video.demo.jwt.config;
+package com.video.demo.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Component
-public class JwtToeknUtil implements Serializable {
+public class JwtUtils implements Serializable {
 
     private static final long serialVersionUID = -2550185165626007488L;
 
