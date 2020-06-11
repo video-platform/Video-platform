@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:id="@+id/main_layout"
+    tools:context=".view.MainActivity">
 
     <EditText
         android:hint="ID"
@@ -20,6 +21,12 @@
     <Button
         android:id="@+id/login_btn_main"
         android:text="로그인"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/camera_btn_main"
+        android:text="Camera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
