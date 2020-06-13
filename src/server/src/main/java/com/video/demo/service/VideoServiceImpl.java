@@ -70,6 +70,9 @@ public class VideoServiceImpl implements VideoService{
         }finally {
             process.destroy();
         }
+        File originFile = new File(VIDEO_PATH+"/"+videoId);
+
+        originFile.delete();
     }
 
 }
