@@ -2,11 +2,11 @@ package study.junghoon.video.clientapp.view
 
 import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,6 +17,7 @@ import study.junghoon.video.clientapp.network.RetrofitApi
 import study.junghoon.video.clientapp.network.RetrofitBuilder
 import study.junghoon.video.clientapp.util.PermissionChecker
 
+
 class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
 
     private lateinit var retrofitApi: RetrofitApi
@@ -26,6 +27,9 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setSupportActionBar(my_toolbar)
+        my_toolbar.title = "YouTube"
+        my_toolbar.setTitleTextColor(resources.getColor(R.color.color_white))
         init()
 
         login_btn_main.setOnClickListener {
@@ -59,6 +63,30 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             }
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_item, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.action_upload -> {
+            true
+        }
+
+        R.id.action_camera -> {
+            true
+        }
+
+        R.id.action_login -> {
+            true
+        }
+
+        else -> {
+            super.onOptionsItemSelected(item)
+        }
+    }
+
 
     private fun openGallery() {
         val intent = Intent(this, GalleryActivity::class.java)

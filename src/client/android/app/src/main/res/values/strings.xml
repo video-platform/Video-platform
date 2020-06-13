@@ -3,4 +3,7 @@
     <string name="requirePermissionMsg">권한이 필요합니다.</string>
     <string name="needPermissionMsg">권한을 허용하지 않으면 사용할 수 없습니다.</string>
     <string name="okMessage">확인</string>
+    <string name="camera">camera</string>
+    <string name="upload">upload</string>
+    <string name="login">login</string>
 </resources>

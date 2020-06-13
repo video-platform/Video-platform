@@ -8,6 +8,14 @@
     android:id="@+id/main_layout"
     tools:context=".view.MainActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#FC0005"
+        app:title="YouTube"
+        android:elevation="4dp"/>
+
     <EditText
         android:hint="ID"
         android:layout_width="match_parent"
