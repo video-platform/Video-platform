@@ -1,20 +1,14 @@
 package study.junghoon.video.clientapp.view
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
-import android.widget.ImageButton
-import android.widget.VideoView
-import androidx.camera.core.VideoCapture
 import androidx.lifecycle.LifecycleOwner
 import kotlinx.android.synthetic.main.activity_camera_preview.*
 import study.junghoon.video.clientapp.R
-import java.io.File
 
 class CameraPreviewActivity : AppCompatActivity(), LifecycleOwner {
     companion object {
