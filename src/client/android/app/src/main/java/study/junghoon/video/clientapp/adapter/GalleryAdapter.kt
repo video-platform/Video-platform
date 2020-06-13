@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -29,10 +30,13 @@ class GalleryAdapter :
             .thumbnail(0.33f)
             .centerCrop()
             .into(holder.imageView)
+
+        holder.videoDuration.text = mediaStoreImage.videoDuration
     }
 
 }
 
 class ImageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val imageView: ImageView = view.findViewById(R.id.image)
+    val videoDuration: TextView = view.findViewById(R.id.video_duration_txtView)
 }
