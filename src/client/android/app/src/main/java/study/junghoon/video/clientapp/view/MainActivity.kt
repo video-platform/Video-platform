@@ -26,13 +26,34 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        setSupportActionBar(my_toolbar)
-        my_toolbar.title = "YouTube"
-        my_toolbar.setTitleTextColor(resources.getColor(R.color.color_white))
         init()
+    }
 
-        login_btn_main.setOnClickListener {
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_item, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.action_upload -> {
+            if (mPermissionChecker.getPermissionState(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                openGallery()
+            } else {
+                mPermissionChecker.requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, 300)
+            }
+            true
+        }
+
+        R.id.action_camera -> {
+            if (mPermissionChecker.getPermissionState(Manifest.permission.CAMERA)) {
+                startCamera()
+            } else {
+                mPermissionChecker.requestPermission(Manifest.permission.CAMERA, 100)
+            }
+            true
+        }
+
+        R.id.action_login -> {
             retrofitApi.loginRequest().enqueue(object : Callback<ServerResponse> {
                 override fun onFailure(call: Call<ServerResponse>, t: Throwable) {
                     TODO("Not yet implemented")
@@ -45,40 +66,6 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                     TODO("Not yet implemented")
                 }
             })
-        }
-
-        camera_btn_main.setOnClickListener {
-            if (mPermissionChecker.getPermissionState(Manifest.permission.CAMERA)) {
-                startCamera()
-            } else {
-                mPermissionChecker.requestPermission(Manifest.permission.CAMERA, 100)
-            }
-        }
-
-        gallery_btn_main.setOnClickListener {
-            if (mPermissionChecker.getPermissionState(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                openGallery()
-            } else {
-                mPermissionChecker.requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, 300)
-            }
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.toolbar_item, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.action_upload -> {
-            true
-        }
-
-        R.id.action_camera -> {
-            true
-        }
-
-        R.id.action_login -> {
             true
         }
 
@@ -99,6 +86,9 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     }
 
     private fun init() {
+        setSupportActionBar(my_toolbar)
+        my_toolbar.title = getString(R.string.toolbarTitle)
+        my_toolbar.setTitleTextColor(resources.getColor(R.color.color_white))
         mPermissionChecker = PermissionChecker(this, main_layout)
         retrofitApi = RetrofitBuilder.getInstance()
     }

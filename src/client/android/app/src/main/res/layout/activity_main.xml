@@ -16,32 +16,4 @@
         app:title="YouTube"
         android:elevation="4dp"/>
 
-    <EditText
-        android:hint="ID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <EditText
-        android:hint="PSW"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/login_btn_main"
-        android:text="로그인"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/camera_btn_main"
-        android:text="Camera Permission"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <Button
-        android:id="@+id/gallery_btn_main"
-        android:text="Open Gallery"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
 </LinearLayout>
