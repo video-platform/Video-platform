@@ -15,15 +15,12 @@ import study.junghoon.video.clientapp.R
 import study.junghoon.video.clientapp.model.ServerResponse
 import study.junghoon.video.clientapp.network.RetrofitApi
 import study.junghoon.video.clientapp.network.RetrofitBuilder
+import study.junghoon.video.clientapp.util.PermissionChecker
 
 class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback {
-    companion object {
-        const val PERMISSION_REQUEST_CAMERA = 100
-        const val PERMISSION_REQUEST_WRITE_STORAGE = 200
-        const val PERMISSION_REQUEST_READ_STORAGE = 300
-    }
 
     private lateinit var retrofitApi: RetrofitApi
+    private lateinit var mPermissionChecker: PermissionChecker
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,21 +44,25 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         }
 
         camera_btn_main.setOnClickListener {
-            showCameraPreView()
+            if (mPermissionChecker.getPermissionState(Manifest.permission.CAMERA)) {
+                startCamera()
+            } else {
+                mPermissionChecker.requestPermission(Manifest.permission.CAMERA, 100)
+            }
+        }
+
+        gallery_btn_main.setOnClickListener {
+            if (mPermissionChecker.getPermissionState(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                openGallery()
+            } else {
+                mPermissionChecker.requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE, 300)
+            }
         }
     }
 
-    private fun showCameraPreView() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.CAMERA
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            //권한 허용되어있음
-            startCamera()
-        } else {
-            requestCameraPermission()
-        }
+    private fun openGallery() {
+        val intent = Intent(this, GalleryActivity::class.java)
+        startActivity(intent)
     }
 
     private fun startCamera() {
@@ -69,26 +70,8 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         startActivity(intent)
     }
 
-    private fun requestCameraPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
-            Snackbar.make(main_layout, "권한필요", Snackbar.LENGTH_INDEFINITE)
-                .setAction("확인") {
-                    ActivityCompat.requestPermissions(
-                        this@MainActivity,
-                        arrayOf(Manifest.permission.CAMERA),
-                        PERMISSION_REQUEST_CAMERA
-                    )
-                }.show()
-        } else {
-            Snackbar.make(main_layout, "권한이 없으면 사용할 수 없습니다.", Snackbar.LENGTH_SHORT).show()
-
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA),
-                PERMISSION_REQUEST_CAMERA
-            )
-        }
-    }
-
     private fun init() {
+        mPermissionChecker = PermissionChecker(this, main_layout)
         retrofitApi = RetrofitBuilder.getInstance()
     }
 }
