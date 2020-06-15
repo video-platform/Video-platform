@@ -3,12 +3,12 @@ package study.junghoon.video.clientapp.util
 import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
-import android.widget.LinearLayout
+import android.widget.FrameLayout
 import androidx.core.app.ActivityCompat
 import com.google.android.material.snackbar.Snackbar
 import study.junghoon.video.clientapp.R
 
-class PermissionChecker(activity: Activity, view: LinearLayout) {
+class PermissionChecker(activity: Activity, view: FrameLayout) {
 
     companion object {
         const val PERMISSION_REQUEST_CAMERA = 100

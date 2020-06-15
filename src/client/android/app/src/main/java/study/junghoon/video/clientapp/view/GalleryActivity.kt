@@ -53,7 +53,7 @@ class GalleryActivity : AppCompatActivity() {
         val projection = arrayOf(
             MediaStore.Video.Media._ID,
             MediaStore.Video.Media.DISPLAY_NAME,
-            null
+            MediaStore.Video.Media.DURATION
 //            MediaStore.Video.Media.DATE_TAKEN
         )
 //        val selection = "${MediaStore.Video.Media.DATE_TAKEN} >= ?"
@@ -76,6 +76,8 @@ class GalleryActivity : AppCompatActivity() {
 //                cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_TAKEN)
             val displayNameColumn =
                 cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME)
+            val videoDuration =
+                cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION)
             while (cursor.moveToNext()) {
                 val id = cursor.getLong(idColumn)
 //                val dateTaken = Date(cursor.getLong(dateTakenColumn))
@@ -84,7 +86,8 @@ class GalleryActivity : AppCompatActivity() {
                     MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
                     id.toString()
                 )
-                val video = MediaStoreVideo(id, displayName, null, contentUri)
+                val duration = cursor.getString(videoDuration)
+                val video = MediaStoreVideo(id, displayName, duration, contentUri)
                 videos += video
                 Log.e(
                     "video ",
