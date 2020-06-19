@@ -7,7 +7,7 @@ import java.util.*
 data class MediaStoreVideo(
     val id: Long,
     val displayName: String,
-    val dateTaken: Date?,
+    val videoDuration: String,
     val contentUri: Uri
 ) {
     companion object {
