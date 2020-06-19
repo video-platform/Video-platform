@@ -11,9 +11,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import study.junghoon.video.clientapp.R
 import study.junghoon.video.clientapp.util.MediaStoreVideo
+import study.junghoon.video.clientapp.util.TimeConverter
 
 class GalleryAdapter :
     ListAdapter<MediaStoreVideo, ImageViewHolder>(MediaStoreVideo.DiffCallback) {
+
+    interface VideoClickListener {
+        fun selectedVideo(video: MediaStoreVideo)
+    }
+
+    fun setVideoClickListener(videoClickListener: VideoClickListener) {
+        this.mVideoClickListener = videoClickListener
+    }
+
+    private lateinit var mVideoClickListener: VideoClickListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -31,7 +42,11 @@ class GalleryAdapter :
             .centerCrop()
             .into(holder.imageView)
 
-        holder.videoDuration.text = mediaStoreImage.videoDuration
+        holder.videoDuration.text = TimeConverter.millisecondToTime(mediaStoreImage.videoDuration)
+
+        holder.imageView.setOnClickListener {
+            mVideoClickListener.selectedVideo(mediaStoreImage)
+        }
     }
 
 }

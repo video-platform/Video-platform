@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
 import android.util.Log
+import android.view.Menu
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -16,6 +17,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import study.junghoon.video.clientapp.R
 import study.junghoon.video.clientapp.adapter.GalleryAdapter
+import study.junghoon.video.clientapp.util.GridItemDecorator
 import study.junghoon.video.clientapp.util.MediaStoreVideo
 import java.text.SimpleDateFormat
 
@@ -30,14 +32,25 @@ class GalleryActivity : AppCompatActivity() {
         val galleryAdapter = GalleryAdapter()
         gallery_recyclerView.also { view ->
             view.layoutManager = GridLayoutManager(this, 3)
+            view.addItemDecoration(GridItemDecorator(applicationContext, 3, 3))
             view.adapter = galleryAdapter
         }
+
+        galleryAdapter.setVideoClickListener(object : GalleryAdapter.VideoClickListener{
+            override fun selectedVideo(video: MediaStoreVideo) {
+                Log.e("jhjh","onClick videoItem"+video)
+            }
+        })
 
         videos.observe(this, Observer { videos ->
             galleryAdapter.submitList(videos)
         })
 
         showImages()
+
+        back_upload_video.setOnClickListener {
+            super.onBackPressed()
+        }
     }
 
     private fun showImages() {
