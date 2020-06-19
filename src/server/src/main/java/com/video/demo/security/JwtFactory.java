@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtFactory {
-
+    // TODO Jwt generate test
     private static final Logger logger = LoggerFactory.getLogger(JwtFactory.class);
     private static final String SIGNINGKEY = "jwttest";
 

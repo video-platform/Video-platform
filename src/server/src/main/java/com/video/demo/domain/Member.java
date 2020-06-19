@@ -24,4 +24,8 @@ public class Member {
     @Column(name = "MEMBER_NAME", length = 60)
     private String MemberName;
 
+    @Column(name = "MEMBER_ROLE")
+    @Enumerated(value = EnumType.STRING)
+    private UserRole userRole;
+
 }
