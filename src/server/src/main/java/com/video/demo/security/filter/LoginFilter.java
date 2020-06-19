@@ -3,6 +3,8 @@ package com.video.demo.security.filter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -12,6 +14,16 @@ import java.io.IOException;
 
 public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 
+    private AuthenticationSuccessHandler authenticationSuccessHandler;
+    private AuthenticationFailureHandler authenticationFailureHandler;
+
+    // login 기본 url 명시
+    public LoginFilter(String defaultUrl, AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler){
+        super(defaultUrl);
+        this.authenticationSuccessHandler = successHandler;
+        this.authenticationFailureHandler = failureHandler;
+    }
+
     protected LoginFilter(String defaultFilterProcessesUrl) {
         super(defaultFilterProcessesUrl);
     }
@@ -19,6 +31,8 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     // 인증 시도 : provider authenticate()
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+        // TODO wrtie Authentication
+
         return null;
     }
 
