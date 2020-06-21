@@ -1,5 +1,10 @@
 package com.video.demo.security.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.video.demo.domain.LoginDto;
+import com.video.demo.security.tokens.PreAuthorizationToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
@@ -31,18 +36,24 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     // 인증 시도 : provider authenticate()
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        // TODO wrtie Authentication
+        LoginDto loginDto = new ObjectMapper().readValue(request.getReader(), LoginDto.class);
+        PreAuthorizationToken token = new PreAuthorizationToken(loginDto);
 
-        return null;
+        return super.getAuthenticationManager().authenticate(token);
     }
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        super.successfulAuthentication(request, response, chain, authResult);
+        this.authenticationSuccessHandler.onAuthenticationSuccess(request, response, authResult);
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        super.unsuccessfulAuthentication(request, response, failed);
+        AuthenticationFailureHandler handler = (res, rep, exception) -> {
+            Logger log = LoggerFactory.getLogger("authentication_failure");
+
+            log.error(failed.getMessage());
+        };
+        handler.onAuthenticationFailure(request, response, failed);
     }
 }

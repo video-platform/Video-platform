@@ -11,9 +11,11 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import java.util.NoSuchElementException;
 
+@Component
 public class LoginAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
@@ -50,7 +52,7 @@ public class LoginAuthenticationProvider implements AuthenticationProvider {
 
     // matches : 원본이 앞에 와야 한다.
     private boolean isCorrectPassword(String password, Member member){
-        return passwordEncoder.matches(member.getMemberPw(), password);
+        return passwordEncoder.matches(password, member.getMemberPw());
     }
 
 }

@@ -1,6 +1,7 @@
 package com.video.demo.repository;
 
 import com.video.demo.domain.Member;
+import com.video.demo.domain.UserRole;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -33,8 +34,9 @@ class MemberRepositoryTest {
     void memberInsertTest(){
         Member member = new Member();
         member.setMemberEmail("test@test.com");
-        member.setMemberName("jongmin");
+        member.setMemberName("jongminLee");
         member.setMemberPw("test");
+        member.setUserRole(UserRole.USER);
         memberRepository.save(member);
     }
 
