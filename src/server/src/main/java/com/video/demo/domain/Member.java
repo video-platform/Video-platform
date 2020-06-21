@@ -13,6 +13,7 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MEMBER_NO")
     private Long memberNo;
 
     @Column(name = "MEMBER_EMAIL", unique = true, length = 80)
