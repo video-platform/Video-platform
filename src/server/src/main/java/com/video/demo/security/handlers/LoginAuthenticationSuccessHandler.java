@@ -1,12 +1,10 @@
 package com.video.demo.security.handlers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.video.demo.domain.TokenDto;
 import com.video.demo.security.JwtFactory;
 import com.video.demo.security.MemberContext;
 import com.video.demo.security.tokens.PostAuthorizationToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -18,14 +16,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
+@Component(value = "LoginAuthenticationSuccessHandler")
 public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    @Autowired
-    private JwtFactory jwtFactory;
+    private final JwtFactory jwtFactory;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
+
+    public LoginAuthenticationSuccessHandler(JwtFactory jwtFactory, ObjectMapper objectMapper) {
+        this.jwtFactory = jwtFactory;
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication auth) throws IOException, ServletException {
