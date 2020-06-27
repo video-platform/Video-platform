@@ -1,9 +1,14 @@
 package com.video.demo.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 
 import java.util.ArrayList;
@@ -14,6 +19,9 @@ import java.util.Random;
 public class VideoServiceImpl implements VideoService{
 
     static final String VIDEO_PATH = "/Users/parksungwoo/Desktop/demoVideo";
+
+    @Autowired
+    RedisTemplate<String,Object> redisTemplate;
 
     @Override
     public String videoUpload(MultipartFile multipartFile) throws IOException {
@@ -75,4 +83,41 @@ public class VideoServiceImpl implements VideoService{
         originFile.delete();
     }
 
+    @Override
+    public String getViewerIp(HttpServletRequest request) {
+
+        String ip = request.getHeader("X-Forwarded-For");
+
+        if (ip == null) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null) {
+            ip = request.getHeader("WL-Proxy-Client-IP"); // 웹로직
+        }
+        if (ip == null) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+        }
+        if (ip == null) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (ip == null) {
+            ip = request.getRemoteAddr();
+        }
+        return ip;
+    }
+
+    @Override
+    public boolean videoViewerCheck(String viewerIp,String videoId) {
+        ValueOperations<String,Object> valueOperations = redisTemplate.opsForValue();
+        if (!redisTemplate.hasKey(viewerIp)){
+            valueOperations.increment(videoId);
+            valueOperations.set(viewerIp,1,10800);
+            int videoCount = (int) valueOperations.get(videoId);
+            if(videoCount==500){
+                //Database에 조회수 저장.
+                return true;
+            }
+        }
+        return false;
+    }
 }

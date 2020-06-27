@@ -1,5 +1,6 @@
 package com.video.demo.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.video.demo.security.handlers.LoginAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +21,11 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder getPasswordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public ObjectMapper getObjectMapper(){
+        return new ObjectMapper();
     }
 
 }
