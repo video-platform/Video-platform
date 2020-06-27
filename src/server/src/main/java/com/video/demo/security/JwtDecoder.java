@@ -19,7 +19,7 @@ public class JwtDecoder {
     public MemberContext decodeJwt(String token){
         DecodedJWT decodedJWT = isValidToken(token)
                 .orElseThrow(() -> new InvalidJwtException("유효한 토큰이 아닙니다."));
-        String username = decodedJWT.getClaim("USERNAME").asString();
+        String username = decodedJWT.getClaim("USER_EMAIL").asString();
         String role = decodedJWT.getClaim("USER_ROLE").asString();
 
         return new MemberContext(username, "tempPassword", role);

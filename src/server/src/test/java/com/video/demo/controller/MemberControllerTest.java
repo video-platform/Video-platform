@@ -19,6 +19,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
@@ -43,7 +44,6 @@ class MemberControllerTest {
 
 
     @Test
-    @Disabled
     void memberSignInTest() throws Exception {
         LoginDto loginDto = new LoginDto();
         loginDto.setMemberEmail("test@test.com");
@@ -54,6 +54,16 @@ class MemberControllerTest {
     }
 
     @Test
+    @Disabled
+    void contactResourceTest() throws Exception {
+        String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwbGF0Zm9ybSIsIlVTRVJOQU1FIjoidGVzdEB0ZXN0LmNvbSIsIlVTRVJfUk9MRSI6IlJPTEVfVVNFUiJ9.oMSvva7ZiMB215f35ZhyYmJY84D3f5Ru3QltiDE4z-I";
+        MockHttpServletResponse response = mockMvc.perform(get("/member/test").header("Authorization", token))
+                .andDo(print()).andReturn().getResponse();
+        log.info("response : {}", response.getContentAsString());
+    }
+
+    @Test
+    @Disabled
     void memberSignUpTest() throws Exception {
         Member member = new Member();
         member.setMemberName("jongmin");
