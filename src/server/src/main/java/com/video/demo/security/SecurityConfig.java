@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    protected LoginFilter loginFilter() throws Exception{
+    private LoginFilter loginFilter() throws Exception{
         LoginFilter loginFilter = new LoginFilter("/login", loginAuthenticationSuccessHandler, null);
         loginFilter.setAuthenticationManager(super.authenticationManager());
 

@@ -1,14 +1,12 @@
 package com.video.demo.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.video.demo.domain.Member;
-import com.video.demo.domain.UserRole;
+import com.video.demo.domain.dto.LoginDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -17,8 +15,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest
 @WebAppConfiguration
@@ -32,21 +31,20 @@ class MemberControllerTest {
     private WebApplicationContext webApplicationContext;
 
     @BeforeEach
-    public void setUp() throws  Exception {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    void setUp() throws  Exception {
+        this.mockMvc = MockMvcBuilders
+                .webAppContextSetup(webApplicationContext)
+                .apply(springSecurity()).build();
     }
-
 
 
     @Test
     void memberSignInTest() throws Exception {
-        Member member = new Member();
-        member.setUserRole(UserRole.USER);
-        member.setMemberEmail("test@test.com");
-        member.setMemberPw("1234");
-        member.setMemberName("jongmin");
+        LoginDto loginDto = new LoginDto();
+        loginDto.setMemberEmail("test@test.com");
+        loginDto.setMemberPw("test");
         MockHttpServletResponse response = mockMvc.perform(post("/login").contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(member))).andReturn().getResponse();
+                .content(asJsonString(loginDto))).andDo(print()).andReturn().getResponse();
         log.info("response : {}", response.getContentAsString());
     }
 

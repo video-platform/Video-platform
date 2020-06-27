@@ -1,6 +1,6 @@
 package com.video.demo.security.tokens;
 
-import com.video.demo.domain.LoginDto;
+import com.video.demo.domain.dto.LoginDto;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 
@@ -11,7 +11,7 @@ public class PreAuthorizationToken extends UsernamePasswordAuthenticationToken {
     }
 
     public PreAuthorizationToken(LoginDto dto){
-        this(dto.getId(), dto.getPassword());
+        this(dto.getMemberEmail(), dto.getMemberPw());
     }
 
     public String getUsername(){

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 
+// TODO : MemberContextService 를 사용하지 않을 수도 있다. LoginAuthenticationProvider 에서 처리할 수도 있음
 @Service
 public class MemberContextService implements UserDetailsService {
 

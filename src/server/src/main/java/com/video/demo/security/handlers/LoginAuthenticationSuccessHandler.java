@@ -1,7 +1,7 @@
 package com.video.demo.security.handlers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.video.demo.domain.TokenDto;
+import com.video.demo.domain.dto.TokenDto;
 import com.video.demo.security.JwtFactory;
 import com.video.demo.security.MemberContext;
 import com.video.demo.security.tokens.PostAuthorizationToken;

@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtFactory {
-    // TODO Jwt generate test
+
     private static final Logger logger = LoggerFactory.getLogger(JwtFactory.class);
-    private static final String SIGNINGKEY = "jwttest";
+    private static final String SIGNINGKEY = "secret";
 
     public String generateToken(MemberContext memberContext){
         String token = null;
