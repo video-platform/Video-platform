@@ -1,4 +1,4 @@
-package com.video.demo.domain;
+package com.video.demo.domain.dto;
 
 import lombok.Getter;
 import lombok.Setter;
