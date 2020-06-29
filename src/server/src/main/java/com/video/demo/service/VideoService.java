@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public interface VideoService {
     String videoUpload(MultipartFile multipartFile) throws IOException;
-    void videoIncoding(String videoId);
+    void videoEncoding(String videoId);
     String getViewerIp(HttpServletRequest request);
     boolean videoViewerCheck(String viewerIp,String videoId);
 }

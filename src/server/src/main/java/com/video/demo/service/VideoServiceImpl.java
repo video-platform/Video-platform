@@ -55,7 +55,7 @@ public class VideoServiceImpl implements VideoService{
     }
 
     @Override
-    public void videoIncoding(String videoId){
+    public void videoEncoding(String videoId){
         Runtime runtime = Runtime.getRuntime();
         Process process = null;
 
