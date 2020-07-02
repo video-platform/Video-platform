@@ -55,6 +55,14 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         // 인증에 성공하지 못해서 SecurityContext 를 지워줘야 한다
         SecurityContextHolder.clearContext();
-        this.unsuccessfulAuthentication(request, response, failed);
+
+        /*
+             TODO : 인증 실패시 처리
+             Login Filter 와 JWT filter는 엄연히 다른 것이다.
+             Login Filter는 로그인에 대해서 검증하고 JWT filter는 로그인 후 리소스에 접근할 때 토큰을 검증하는 것이다.
+             헷갈릴 까봐 TODO에 써놨다. 리팩토링 가능한 부분들은 리팩토링 하자.
+             + 전체 객체에 대해 정리 한번 해야 할듯 그래야 어떤건지 알고 지울 수 있는 것들은 지우고
+             추가 할 수 있는 것들은 추가 가능
+         */
     }
 }

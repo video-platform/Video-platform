@@ -24,12 +24,12 @@ public class MemberController {
         return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
-    @GetMapping("/test")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public String getUsername(Authentication authentication){
-        PostAuthorizationToken token = (PostAuthorizationToken)authentication;
-        return token.getMemberContext().getUsername();
-    }
+//    @GetMapping("/test")
+//    @PreAuthorize("hasRole('ROLE_USER')")
+//    public String getUsername(Authentication authentication){
+//        PostAuthorizationToken token = (PostAuthorizationToken)authentication;
+//        return token.getMemberContext().getUsername();
+//    }
 
 
 }

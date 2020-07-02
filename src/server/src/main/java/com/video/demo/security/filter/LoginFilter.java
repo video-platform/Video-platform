@@ -39,7 +39,6 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         LoginDto loginDto = new ObjectMapper().readValue(request.getReader(), LoginDto.class);
-        log.info("memberEmail : {}, memberPw : {}", loginDto.getMemberEmail(), loginDto.getMemberPw());
         PreAuthorizationToken token = new PreAuthorizationToken(loginDto);
 
         return super.getAuthenticationManager().authenticate(token);
@@ -54,7 +53,7 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         AuthenticationFailureHandler handler = (res, rep, exception) -> {
             Logger log = LoggerFactory.getLogger("authentication_failure");
-
+            // TODO : fail Handle
             log.error(failed.getMessage());
         };
         handler.onAuthenticationFailure(request, response, failed);

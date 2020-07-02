@@ -23,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -67,7 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     protected JwtAuthenticationFilter jwtFilter() throws Exception{
-        FilterSkipMatcher matcher = new FilterSkipMatcher(Arrays.asList("/signin"), "/member/**");
+        FilterSkipMatcher matcher = new FilterSkipMatcher(Arrays.asList("/signin", "/member/signup"), "/member/**");
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(matcher, jwtAuthenticationFailureHandler, headerTokenExtractor);
         jwtAuthenticationFilter.setAuthenticationManager(super.authenticationManagerBean());
 
