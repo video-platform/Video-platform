@@ -8,16 +8,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtFactory {
-    // TODO Jwt generate test
+
     private static final Logger logger = LoggerFactory.getLogger(JwtFactory.class);
-    private static final String SIGNINGKEY = "jwttest";
+    private static final String SIGNINGKEY = "secret";
 
     public String generateToken(MemberContext memberContext){
         String token = null;
         try{
             token = JWT.create()
                         .withIssuer("platform")
-                        .withClaim("USERNAME", memberContext.getUsername())
+                        .withClaim("USER_EMAIL", memberContext.getUsername())
+                        .withClaim("USER_NAME", memberContext.getMember().getMemberName())
+                        .withClaim("USER_ROLE", memberContext.getMember().getUserRole().getRoleName())
                         .sign(generateAlgorithm());
         }catch (Exception ignored){
             logger.error(ignored.getMessage());
