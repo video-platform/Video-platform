@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 @Getter
 @EqualsAndHashCode
 @ToString
+@Table
 public class Video {
     @Id
     private String videoId;
