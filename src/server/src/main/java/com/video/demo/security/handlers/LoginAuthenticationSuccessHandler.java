@@ -1,7 +1,7 @@
 package com.video.demo.security.handlers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.video.demo.domain.TokenDto;
+import com.video.demo.domain.dto.ResponseMessage;
 import com.video.demo.security.JwtFactory;
 import com.video.demo.security.MemberContext;
 import com.video.demo.security.tokens.PostAuthorizationToken;
@@ -34,18 +34,17 @@ public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessH
 
         MemberContext context = (MemberContext) postAuthorizationToken.getPrincipal();
         String tokenString = jwtFactory.generateToken(context);
-        processResponse(response, writeDto(tokenString));
+        processResponse(response, tokenString);
 
     }
 
-    private TokenDto writeDto(String token){
-        return new TokenDto(token);
-    }
 
-    private void processResponse(HttpServletResponse res, TokenDto dto) throws IOException {
+    private void processResponse(HttpServletResponse res, String token) throws IOException {
         res.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         res.setStatus(HttpStatus.OK.value());
-        res.getWriter().write(objectMapper.writeValueAsString(dto));
+
+        ResponseMessage responseMessage = new ResponseMessage("Bearer " + token, "로그인에 성공했습니다.");
+        res.getWriter().write(objectMapper.writeValueAsString(responseMessage));
     }
 
 }

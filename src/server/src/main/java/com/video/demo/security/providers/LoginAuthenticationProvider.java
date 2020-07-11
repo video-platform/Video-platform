@@ -5,7 +5,6 @@ import com.video.demo.repository.MemberRepository;
 import com.video.demo.security.MemberContext;
 import com.video.demo.security.tokens.PostAuthorizationToken;
 import com.video.demo.security.tokens.PreAuthorizationToken;
-import com.video.demo.service.MemberContextService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -17,9 +16,6 @@ import java.util.NoSuchElementException;
 
 @Component
 public class LoginAuthenticationProvider implements AuthenticationProvider {
-
-    @Autowired
-    private MemberContextService memberContextService;
 
     @Autowired
     private MemberRepository memberRepository;

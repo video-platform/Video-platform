@@ -1,4 +1,4 @@
-package com.video.demo.domain;
+package com.video.demo.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -8,9 +8,9 @@ import lombok.Setter;
 public class LoginDto {
 
     @JsonProperty("memberEmail")
-    private String id = null;
+    private String memberEmail;
 
-    @JsonProperty("MemberPw")
-    private String password = null;
+    @JsonProperty("memberPw")
+    private String memberPw;
 
 }
