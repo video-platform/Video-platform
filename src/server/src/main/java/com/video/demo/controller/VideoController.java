@@ -1,11 +1,16 @@
 package com.video.demo.controller;
 
+import com.video.demo.repository.CommentsRepository;
+import com.video.demo.repository.VideoRepository;
 import com.video.demo.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +22,11 @@ public class VideoController {
 
     @Autowired
     private VideoService videoService;
+
+    @Autowired
+    private VideoRepository videoRepository;
+    @Autowired
+    private CommentsRepository commentsRepository;
 
     @GetMapping("/upload")
     public String videoUploadPage() {
@@ -92,5 +102,16 @@ public class VideoController {
         }finally{
             randomFile.close();
         }
+    }
+
+    @GetMapping("view")
+    public ModelAndView videoViewPage(@RequestParam String videoId){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("video",videoRepository.findById(videoId));
+        modelAndView.addObject("commentList",commentsRepository.findAll());
+        modelAndView.addObject("commentCount",commentsRepository.count());
+
+
+        return modelAndView;
     }
 }

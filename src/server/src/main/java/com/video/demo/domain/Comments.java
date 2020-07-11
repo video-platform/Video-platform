@@ -16,8 +16,16 @@ public class Comments {
     private Long commentNo;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    private String videoId;
-    private Long commentMemberNo;
+    @JoinColumn(name = "VIDEO_ID")
+    private Video video;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "MEMBER_NO")
+    private Member member;
+
+    @Column(nullable = false)
     private String commentContent;
+
+    @Column(nullable = false)
     private Timestamp commentDate;
 }
