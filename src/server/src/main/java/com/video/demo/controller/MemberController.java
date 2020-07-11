@@ -18,18 +18,19 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
+
     @PostMapping("/signup")
     public ResponseEntity<ResponseMessage> memberSignUp(@RequestBody Member member){
         ResponseMessage responseMessage = memberService.memberSignUp(member);
         return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
-//    @GetMapping("/test")
-//    @PreAuthorize("hasRole('ROLE_USER')")
-//    public String getUsername(Authentication authentication){
-//        PostAuthorizationToken token = (PostAuthorizationToken)authentication;
-//        return token.getMemberContext().getUsername();
-//    }
+    @GetMapping("/test")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String getUsername(Authentication authentication){
+        PostAuthorizationToken token = (PostAuthorizationToken)authentication;
+        return token.getMemberContext().getUsername();
+    }
 
 
 }

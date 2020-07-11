@@ -2,9 +2,12 @@ package com.video.demo.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.video.demo.domain.dto.LoginDto;
+import com.video.demo.exception.ErrorMessage;
 import com.video.demo.security.tokens.PreAuthorizationToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
@@ -16,6 +19,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -52,9 +57,8 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         AuthenticationFailureHandler handler = (res, rep, exception) -> {
-            Logger log = LoggerFactory.getLogger("authentication_failure");
-            // TODO : fail Handle
-            log.error(failed.getMessage());
+            // Filter이기 때문에 ControllerAdvice에서 처리할 수 없어 별도로 처리
+            JwtAuthenticationFilter.unSuccessfulAuthenticationMessage(response, failed.getMessage());
         };
         handler.onAuthenticationFailure(request, response, failed);
     }
