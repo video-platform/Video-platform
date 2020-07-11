@@ -31,7 +31,7 @@ public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessH
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication auth) throws IOException, ServletException {
         PostAuthorizationToken postAuthorizationToken = (PostAuthorizationToken) auth;
-
+        // TODO : refresh token이 있어야 한다.
         MemberContext context = (MemberContext) postAuthorizationToken.getPrincipal();
         String tokenString = jwtFactory.generateToken(context);
         processResponse(response, tokenString);
@@ -43,6 +43,7 @@ public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessH
         res.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         res.setStatus(HttpStatus.OK.value());
 
+        // TODO : refresh token을 같이 담아서 넘겨줘야 한다.
         ResponseMessage responseMessage = new ResponseMessage("Bearer " + token, "로그인에 성공했습니다.");
         res.getWriter().write(objectMapper.writeValueAsString(responseMessage));
     }

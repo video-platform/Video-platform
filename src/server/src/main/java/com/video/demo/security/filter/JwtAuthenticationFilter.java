@@ -50,6 +50,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
             unSuccessfulAuthenticationMessage(response, ex.getMessage());
         }
 
+        // token 검증 시도
         return super.getAuthenticationManager().authenticate(token);
     }
 
