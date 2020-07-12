@@ -1,10 +1,13 @@
 package com.video.demo.security.handlers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.video.demo.domain.Token;
 import com.video.demo.domain.dto.ResponseMessage;
 import com.video.demo.security.JwtFactory;
 import com.video.demo.security.MemberContext;
 import com.video.demo.security.tokens.PostAuthorizationToken;
+import com.video.demo.service.TokenService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -23,6 +26,9 @@ public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessH
 
     private final ObjectMapper objectMapper;
 
+    @Autowired
+    private TokenService tokenService;
+
     public LoginAuthenticationSuccessHandler(JwtFactory jwtFactory, ObjectMapper objectMapper) {
         this.jwtFactory = jwtFactory;
         this.objectMapper = objectMapper;
@@ -31,20 +37,22 @@ public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessH
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication auth) throws IOException, ServletException {
         PostAuthorizationToken postAuthorizationToken = (PostAuthorizationToken) auth;
-        // TODO : refresh token이 있어야 한다.
+
         MemberContext context = (MemberContext) postAuthorizationToken.getPrincipal();
         String tokenString = jwtFactory.generateToken(context);
-        processResponse(response, tokenString);
+        String refreshToken = jwtFactory.generateRefreshToken(tokenString);
+        Token token = new Token(tokenString, refreshToken, context.getUsername());
+        processResponse(response, token);
 
     }
 
 
-    private void processResponse(HttpServletResponse res, String token) throws IOException {
+    private void processResponse(HttpServletResponse res, Token token) throws IOException {
         res.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         res.setStatus(HttpStatus.OK.value());
 
-        // TODO : refresh token을 같이 담아서 넘겨줘야 한다.
-        ResponseMessage responseMessage = new ResponseMessage("Bearer " + token, "로그인에 성공했습니다.");
+        tokenService.insertToken(token); // access_token, refresh_token db삽입
+        ResponseMessage responseMessage = new ResponseMessage(token, "로그인에 성공했습니다.");
         res.getWriter().write(objectMapper.writeValueAsString(responseMessage));
     }
 

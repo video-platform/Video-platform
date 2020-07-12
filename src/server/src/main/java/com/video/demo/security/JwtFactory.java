@@ -27,6 +27,19 @@ public class JwtFactory {
         return token;
     }
 
+    public String generateRefreshToken(String accessToken){
+        String token = null;
+        try{
+            token = JWT.create()
+                    .withIssuer("platform")
+                    .withClaim("ACCESS_TOKEN", accessToken)
+                    .sign(generateAlgorithm());
+        }catch (Exception ignored){
+            logger.error(ignored.getMessage());
+        }
+        return token;
+    }
+
     private Algorithm generateAlgorithm(){
         return Algorithm.HMAC256(SIGNINGKEY);
     }
