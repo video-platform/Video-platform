@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter @Setter
-@Table
+@Table(name = "\"member\"")
 @EqualsAndHashCode
 public class Member {
 
@@ -30,5 +30,8 @@ public class Member {
     @Column(name = "MEMBER_ROLE")
     @Enumerated(value = EnumType.STRING)
     private UserRole userRole;
+
+    @OneToOne(mappedBy = "member")
+    private Token token;
 
 }
