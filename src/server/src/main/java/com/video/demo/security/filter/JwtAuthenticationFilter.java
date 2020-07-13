@@ -49,8 +49,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         }catch (InvalidJwtException ex){
             unSuccessfulAuthenticationMessage(response, ex.getMessage());
         }
-        // TODO : 여기서 token 검증을 한다.
-        // token 검증 시도
+
         return super.getAuthenticationManager().authenticate(token);
     }
 

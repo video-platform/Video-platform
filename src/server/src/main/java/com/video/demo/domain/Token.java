@@ -21,17 +21,22 @@ public class Token {
     @Column(name = "REFRESH_TOKEN", unique = true, length = 200)
     private String refreshToken;
 
-    @OneToOne(mappedBy = "token")
+    @OneToOne
+    @JoinColumn(name = "member_no")
     private Member member;
 
     Token(){}
 
-    public Token(String accessToken, String refreshToken, String member){
+    public Token(String accessToken, String refreshToken, String email, String username, UserRole userRole, long memberNo){
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
 
         Member tempMember = new Member();
-        tempMember.setMemberEmail(member);
+        tempMember.setMemberEmail(email);
+        tempMember.setMemberName(username);
+        tempMember.setUserRole(userRole);
+        tempMember.setMemberPw("");
+        tempMember.setMemberNo(memberNo);
         this.member = tempMember;
     }
 

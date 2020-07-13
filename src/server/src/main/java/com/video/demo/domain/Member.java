@@ -31,8 +31,7 @@ public class Member {
     @Enumerated(value = EnumType.STRING)
     private UserRole userRole;
 
-    @OneToOne
-    @JoinColumn(name = "tokenNo")
+    @OneToOne(mappedBy = "member")
     private Token token;
 
 }

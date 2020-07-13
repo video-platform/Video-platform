@@ -19,11 +19,9 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        // TODO : access token, refresh token 검증
-        // access_token과 refresh token을 구별해서 꺼내야 한다.
-
         String token = (String)authentication.getPrincipal();
-        MemberContext memberContext = jwtDecoder.decodeJwt(token); // jwt 유효성 검증
+        String name = authentication.getName();
+        MemberContext memberContext = jwtDecoder.decodeJwt(token, name); // jwt 유효성 검증
 
         return PostAuthorizationToken.getTokenMemberContext(memberContext);
     }
