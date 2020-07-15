@@ -1,5 +1,6 @@
 package com.video.demo.exception.handler;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.video.demo.exception.ErrorMessage;
 import com.video.demo.exception.InvalidJwtException;
 import org.springframework.dao.DataIntegrityViolationException;
