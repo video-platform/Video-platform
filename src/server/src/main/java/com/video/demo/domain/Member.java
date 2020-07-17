@@ -1,9 +1,7 @@
 package com.video.demo.domain;
 
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -11,6 +9,8 @@ import javax.persistence.*;
 @Getter @Setter
 @Table
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class Member {
 
     @Id
