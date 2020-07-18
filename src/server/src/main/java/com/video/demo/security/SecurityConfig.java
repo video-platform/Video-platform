@@ -61,14 +61,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private LoginFilter loginFilter() throws Exception{
-        LoginFilter loginFilter = new LoginFilter("/signin", loginAuthenticationSuccessHandler, null);
+        LoginFilter loginFilter = new LoginFilter("/member/signin", loginAuthenticationSuccessHandler, null);
         loginFilter.setAuthenticationManager(super.authenticationManager());
 
         return loginFilter;
     }
 
     protected JwtAuthenticationFilter jwtFilter() throws Exception{
-        FilterSkipMatcher matcher = new FilterSkipMatcher(Arrays.asList("/signin", "/member/signup"), "/member/**");
+        FilterSkipMatcher matcher = new FilterSkipMatcher(Arrays.asList("/member/signin", "/member/signup"), "/member/**");
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(matcher, jwtAuthenticationFailureHandler, headerTokenExtractor);
         jwtAuthenticationFilter.setAuthenticationManager(super.authenticationManagerBean());
 

@@ -20,7 +20,8 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String token = (String)authentication.getPrincipal();
-        MemberContext memberContext = jwtDecoder.decodeJwt(token);
+
+        MemberContext memberContext = jwtDecoder.decodeJwt(token); // jwt 유효성 검증
 
         return PostAuthorizationToken.getTokenMemberContext(memberContext);
     }

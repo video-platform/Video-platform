@@ -1,10 +1,15 @@
 package com.video.demo.security.filter;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.video.demo.exception.ErrorMessage;
+import com.video.demo.exception.InvalidJwtException;
 import com.video.demo.security.HeaderTokenExtractor;
 import com.video.demo.security.handlers.JwtAuthenticationFailureHandler;
 import com.video.demo.security.tokens.JwtPreProcessingToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
@@ -38,7 +43,13 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         String tokenPayload = request.getHeader("Authorization");
-        JwtPreProcessingToken token = new JwtPreProcessingToken(this.extractor.extract(tokenPayload));
+        JwtPreProcessingToken token = null;
+        try{
+            token = new JwtPreProcessingToken(this.extractor.extract(tokenPayload));
+        }catch (InvalidJwtException ex){
+            unSuccessfulAuthenticationMessage(response, ex.getMessage());
+        }
+
         return super.getAuthenticationManager().authenticate(token);
     }
 
@@ -56,13 +67,21 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         // 인증에 성공하지 못해서 SecurityContext 를 지워줘야 한다
         SecurityContextHolder.clearContext();
 
-        /*
-             TODO : 인증 실패시 처리
-             Login Filter 와 JWT filter는 엄연히 다른 것이다.
-             Login Filter는 로그인에 대해서 검증하고 JWT filter는 로그인 후 리소스에 접근할 때 토큰을 검증하는 것이다.
-             헷갈릴 까봐 TODO에 써놨다. 리팩토링 가능한 부분들은 리팩토링 하자.
-             + 전체 객체에 대해 정리 한번 해야 할듯 그래야 어떤건지 알고 지울 수 있는 것들은 지우고
-             추가 할 수 있는 것들은 추가 가능
-         */
+        unSuccessfulAuthenticationMessage(response, failed.getMessage());
+
+    }
+
+    static void unSuccessfulAuthenticationMessage(HttpServletResponse response, String message) throws IOException {
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTime();
+        errorMessage.setMessage("인증정보가 정확하지 않습니다.");
+        errorMessage.setErrorCode(HttpStatus.BAD_REQUEST.value());
+        errorMessage.setDetail(message);
+
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
+        response.setContentType("application/json");
+        response.getWriter().write(new ObjectMapper().writeValueAsString(errorMessage));
+        response.getWriter().flush();
+        response.getWriter().close();
     }
 }

@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter @Setter
-@Table
+@Table(name = "\"member\"")
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor

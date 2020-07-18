@@ -2,9 +2,12 @@ package com.video.demo.security.handlers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.video.demo.domain.dto.ResponseMessage;
+import com.video.demo.domain.dto.TokenDTO;
+import com.video.demo.repository.MemberRepository;
 import com.video.demo.security.JwtFactory;
 import com.video.demo.security.MemberContext;
 import com.video.demo.security.tokens.PostAuthorizationToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -23,6 +26,9 @@ public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessH
 
     private final ObjectMapper objectMapper;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
     public LoginAuthenticationSuccessHandler(JwtFactory jwtFactory, ObjectMapper objectMapper) {
         this.jwtFactory = jwtFactory;
         this.objectMapper = objectMapper;
@@ -34,6 +40,7 @@ public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessH
 
         MemberContext context = (MemberContext) postAuthorizationToken.getPrincipal();
         String tokenString = jwtFactory.generateToken(context);
+
         processResponse(response, tokenString);
 
     }
@@ -43,7 +50,7 @@ public class LoginAuthenticationSuccessHandler implements AuthenticationSuccessH
         res.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         res.setStatus(HttpStatus.OK.value());
 
-        ResponseMessage responseMessage = new ResponseMessage("Bearer " + token, "로그인에 성공했습니다.");
+        ResponseMessage responseMessage = new ResponseMessage(token, "로그인에 성공했습니다.");
         res.getWriter().write(objectMapper.writeValueAsString(responseMessage));
     }
 

@@ -12,6 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.NoSuchElementException;
 
 @Component
@@ -29,15 +30,19 @@ public class LoginAuthenticationProvider implements AuthenticationProvider {
         PreAuthorizationToken token = (PreAuthorizationToken)authentication;
         String username = token.getUsername();
         String password = token.getPassword();
-
-        Member member = memberRepository.findByMemberEmail(username)
-                .orElseThrow(() -> new NoSuchElementException("정보에 맞는 계정이 없습니다."));
+        Member member = new Member();
+        try{
+            member = memberRepository.findByMemberEmail(username).get();
+        }catch (NoSuchElementException ex){
+            return null;
+        }
 
         if(isCorrectPassword(password, member)){
             return PostAuthorizationToken.getTokenMemberContext(MemberContext.fromMemberModel(member));
         }
 
-        throw new NoSuchElementException("인증 정보가 정확하지 않습니다.");
+        // LoginFilter unsuccessfulAuthentication 에서 처리
+        return null;
     }
 
     // PreAuthorizationToken에 요청하면 이 Filter에 걸리게된다.
