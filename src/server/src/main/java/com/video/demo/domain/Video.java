@@ -22,7 +22,7 @@ public class Video {
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "VIDEO_CATEGORY_NO")
-    private final VideoCategory videoCategory;
+    private VideoCategory videoCategory;
 
     @Column(nullable = false)
     private String videoName;
@@ -39,5 +39,8 @@ public class Video {
     public Video() {
         channel = null;
         videoCategory = null;
+    }
+    public Video(String videoName){
+        this.videoName=videoName;
     }
 }
