@@ -133,15 +133,11 @@ public class VideoServiceImpl implements VideoService{
     static final int pageSize = 10;
 
     @Override
-    public List<String> getVideoComments(String videoId, int page) throws JsonProcessingException {
+    public List<Comments> getVideoComments(String videoId, int page){
         PageRequest pageRequest = PageRequest.of(page,pageSize);
+
         List<Comments> commentsList = commentsRepository.findByVideo_VideoIdOrderByCommentNo(videoId,pageRequest);
-        List<String> commentsListToStringList = new ArrayList<>();
-        for (Comments comment : commentsList){
-            ObjectMapper objectMapper = new ObjectMapper();
-            String commentToString = objectMapper.writeValueAsString(comment);
-            commentsListToStringList.add(commentToString);
-        }
-        return commentsListToStringList;
+
+        return commentsList;
     }
 }

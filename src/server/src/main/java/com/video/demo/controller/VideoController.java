@@ -1,12 +1,17 @@
 package com.video.demo.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.video.demo.domain.Comments;
+import com.video.demo.domain.Video;
+import com.video.demo.domain.dto.PageRequest;
+import com.video.demo.domain.dto.ResponseMessage;
 import com.video.demo.repository.CommentsRepository;
 import com.video.demo.repository.VideoRepository;
 import com.video.demo.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -113,18 +119,17 @@ public class VideoController {
     }
 
     @GetMapping("view")
-    public ResponseEntity videoViewPage(@RequestParam String videoId, ObjectMapper objectMapper, Comments comments){
+    public ResponseEntity<ResponseMessage> videoViewPage(@RequestBody Video video){
+        Video videos = videoRepository.findById(video.getVideoId()).get();
+        ResponseMessage responseMessage = new ResponseMessage(videos,"Video를 성공적으로 가져왔습니다");
 
-        MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
-        Map<String , String> map = objectMapper.convertValue(comments, new TypeReference<Map<String, String>>() {});
-        multiValueMap.setAll(map);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("video",videoRepository.findById(videoId));
-        modelAndView.addObject("commentList",commentsRepository.findAll());
-        modelAndView.addObject("commentCount",commentsRepository.count());
+        return new ResponseEntity<>(responseMessage,HttpStatus.OK);
+    }
+    @GetMapping("comments")
+    public ResponseEntity<ResponseMessage> videoComments(@RequestBody Video video, @RequestBody PageRequest pageRequest){
+        List<Comments> commentsList = videoService.getVideoComments(video.getVideoId(),pageRequest.getPage());
+        ResponseMessage responseMessage = new ResponseMessage(commentsList,"해당되는 Comments를 가져왔습니다.");
 
-
-
-        return null;
+        return new ResponseEntity<>(responseMessage,HttpStatus.OK);
     }
 }

@@ -1,6 +1,7 @@
 package com.video.demo.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.video.demo.domain.Comments;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,5 +13,5 @@ public interface VideoService {
     void videoEncoding(String videoId);
     String getViewerIp(HttpServletRequest request);
     boolean videoViewerCheck(String viewerIp,String videoId);
-    List<String> getVideoComments(String videoId, int page) throws JsonProcessingException;
+    List<Comments> getVideoComments(String videoId, int page);
 }
