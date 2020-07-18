@@ -1,7 +1,13 @@
 package com.video.demo.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.video.demo.domain.Comments;
+import com.video.demo.repository.CommentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -21,7 +27,9 @@ public class VideoServiceImpl implements VideoService{
     static final String VIDEO_PATH = "/Users/parksungwoo/Desktop/demoVideo";
 
     @Autowired
-    RedisTemplate<String,Object> redisTemplate;
+    private RedisTemplate<String,Object> redisTemplate;
+    @Autowired
+    private CommentsRepository commentsRepository;
 
     @Override
     public String videoUpload(MultipartFile multipartFile) throws IOException {
@@ -53,6 +61,7 @@ public class VideoServiceImpl implements VideoService{
 
         return result;
     }
+
 
     @Override
     public void videoEncoding(String videoId){
@@ -119,5 +128,16 @@ public class VideoServiceImpl implements VideoService{
             }
         }
         return false;
+    }
+
+    static final int pageSize = 10;
+
+    @Override
+    public List<Comments> getVideoComments(String videoId, int page){
+        PageRequest pageRequest = PageRequest.of(page,pageSize);
+
+        List<Comments> commentsList = commentsRepository.findByVideo_VideoIdOrderByCommentNo(videoId,pageRequest);
+
+        return commentsList;
     }
 }
