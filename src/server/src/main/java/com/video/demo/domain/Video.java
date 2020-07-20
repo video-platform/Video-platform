@@ -1,14 +1,13 @@
 package com.video.demo.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Getter
+@Data
+@Builder
 @EqualsAndHashCode
 @ToString
 @Table
@@ -36,11 +35,4 @@ public class Video {
     private String videoAgelimit;
 
 
-    public Video() {
-        channel = null;
-        videoCategory = null;
-    }
-    public Video(String videoName){
-        this.videoName=videoName;
-    }
 }

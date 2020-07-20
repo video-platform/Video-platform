@@ -3,6 +3,7 @@ package com.video.demo.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.video.demo.domain.Channel;
 import com.video.demo.domain.Comments;
 import com.video.demo.domain.Video;
 import com.video.demo.domain.dto.PageRequest;
@@ -18,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,8 +46,10 @@ public class VideoController {
     }
 
     @PostMapping("/upload")
-    public String videoUpload() {
-        return "";
+    public ResponseEntity<ResponseMessage> videoUpload(@RequestBody Video video,@RequestParam("video")MultipartFile multipartFile) throws IOException {
+        ResponseMessage responseMessage = videoService.videoUpload(multipartFile, video);
+
+        return new ResponseEntity<>(responseMessage,HttpStatus.OK);
     }
 
     /*

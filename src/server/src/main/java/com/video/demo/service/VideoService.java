@@ -2,6 +2,8 @@ package com.video.demo.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.video.demo.domain.Comments;
+import com.video.demo.domain.Video;
+import com.video.demo.domain.dto.ResponseMessage;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,7 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface VideoService {
-    String videoUpload(MultipartFile multipartFile) throws IOException;
+    ResponseMessage videoUpload(MultipartFile multipartFile, Video video) throws IOException;
     void videoEncoding(String videoId);
     String getViewerIp(HttpServletRequest request);
     boolean videoViewerCheck(String viewerIp,String videoId);
