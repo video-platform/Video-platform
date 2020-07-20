@@ -2,8 +2,12 @@ package com.video.demo.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.video.demo.domain.Channel;
 import com.video.demo.domain.Comments;
+import com.video.demo.domain.Video;
+import com.video.demo.domain.dto.ResponseMessage;
 import com.video.demo.repository.CommentsRepository;
+import com.video.demo.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.persistence.EntityExistsException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 
@@ -30,16 +35,28 @@ public class VideoServiceImpl implements VideoService{
     private RedisTemplate<String,Object> redisTemplate;
     @Autowired
     private CommentsRepository commentsRepository;
+    @Autowired
+    private VideoRepository videoRepository;
 
     @Override
-    public String videoUpload(MultipartFile multipartFile) throws IOException {
+    public ResponseMessage videoUpload(MultipartFile multipartFile, Video video) throws IOException {
         byte[] data = multipartFile.getBytes();
         String uploadVideoName = createUploadFileName();
+        try {
+            Video saveVideo = Video.builder().videoId(uploadVideoName).channel(video.getChannel()).videoCategory(video.getVideoCategory())
+                    .videoName(multipartFile.getOriginalFilename()).videoContent(video.getVideoContent())
+                    .videoTag(video.getVideoTag()).videoAgelimit(video.getVideoAgelimit()).build();
+            videoRepository.save(saveVideo);
+        }catch (EntityExistsException e){
+
+        }
         FileOutputStream fileOutputStream = new FileOutputStream(VIDEO_PATH+"/"+uploadVideoName);
         fileOutputStream.write(data);
         fileOutputStream.close();
 
-        return uploadVideoName;
+        Video saveVideo = videoRepository.getOne(uploadVideoName);
+
+        return new ResponseMessage(saveVideo,"파일 업로드가 성공적으로 완료 되었습니다.");
     }
 
     //파일 ID 생성
