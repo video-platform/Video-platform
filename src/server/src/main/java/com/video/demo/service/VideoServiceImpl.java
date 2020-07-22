@@ -48,7 +48,7 @@ public class VideoServiceImpl implements VideoService{
                     .videoTag(video.getVideoTag()).videoAgelimit(video.getVideoAgelimit()).build();
             videoRepository.save(saveVideo);
         }catch (EntityExistsException e){
-
+            e.printStackTrace();
         }
         FileOutputStream fileOutputStream = new FileOutputStream(VIDEO_PATH+"/"+uploadVideoName);
         fileOutputStream.write(data);

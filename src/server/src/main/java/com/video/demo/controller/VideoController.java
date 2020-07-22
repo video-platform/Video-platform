@@ -48,6 +48,9 @@ public class VideoController {
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> videoUpload(@RequestBody Video video,@RequestParam("video")MultipartFile multipartFile) throws IOException {
         ResponseMessage responseMessage = videoService.videoUpload(multipartFile, video);
+        //업로드파일 인코딩
+        Video uploadVideo = (Video) responseMessage.getData();
+        videoService.videoEncoding(uploadVideo.getVideoId());
 
         return new ResponseEntity<>(responseMessage,HttpStatus.OK);
     }
