@@ -142,6 +142,6 @@ public class VideoController {
     @PostMapping("comments")
     public ResponseEntity<ResponseMessage> writeComment(@RequestBody Comments comments){
 
-        return null;
+        return new ResponseEntity<>(videoService.addComment(comments),HttpStatus.OK);
     }
 }

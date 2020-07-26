@@ -16,4 +16,5 @@ public interface VideoService {
     String getViewerIp(HttpServletRequest request);
     boolean videoViewerCheck(String viewerIp,String videoId);
     List<Comments> getVideoComments(String videoId, int page);
+    ResponseMessage addComment(Comments comments);
 }

@@ -157,4 +157,11 @@ public class VideoServiceImpl implements VideoService{
 
         return commentsList;
     }
+
+    @Override
+    public ResponseMessage addComment(Comments comments) {
+        commentsRepository.save(comments);
+
+        return new ResponseMessage(null,"댓글이 등록되었습니다.");
+    }
 }
