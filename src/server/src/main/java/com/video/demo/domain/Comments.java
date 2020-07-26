@@ -31,7 +31,7 @@ public class Comments {
     @Column(nullable = false)
     private String commentContent;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp commentDate;
 
     public Comments(Long commentNo, Video video,Member member,String commentContent, Timestamp commentDate) {

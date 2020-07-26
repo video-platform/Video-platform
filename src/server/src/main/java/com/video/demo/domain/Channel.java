@@ -25,6 +25,6 @@ public class Channel {
     @Column(unique = true,length = 60)
     private String channelName;
 
-    @Column(unique = true)
+    @Column(nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp channelDate;
 }
