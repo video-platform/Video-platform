@@ -48,7 +48,7 @@ public class VideoServiceImpl implements VideoService{
                     .videoTag(video.getVideoTag()).videoAgelimit(video.getVideoAgelimit()).build();
             videoRepository.save(saveVideo);
         }catch (EntityExistsException e){
-
+            e.printStackTrace();
         }
         FileOutputStream fileOutputStream = new FileOutputStream(VIDEO_PATH+"/"+uploadVideoName);
         fileOutputStream.write(data);
@@ -156,5 +156,27 @@ public class VideoServiceImpl implements VideoService{
         List<Comments> commentsList = commentsRepository.findByVideo_VideoIdOrderByCommentNo(videoId,pageRequest);
 
         return commentsList;
+    }
+
+    @Override
+    public ResponseMessage addComment(Comments comments) {
+        commentsRepository.save(comments);
+
+        return new ResponseMessage(null,"댓글이 등록되었습니다.");
+    }
+
+    @Override
+    public ResponseMessage editComment(Comments comments) {
+        comments.setCommentEdit("o");
+        commentsRepository.save(comments);
+
+        return new ResponseMessage(comments,"댓글이 수정되었습니다.");
+    }
+
+    @Override
+    public ResponseMessage deleteComment(Comments comments) {
+        commentsRepository.delete(comments);
+
+        return new ResponseMessage(null, "댓글이 삭제되었습니다.");
     }
 }

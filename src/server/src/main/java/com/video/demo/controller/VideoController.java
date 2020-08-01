@@ -48,6 +48,9 @@ public class VideoController {
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> videoUpload(@RequestBody Video video,@RequestParam("video")MultipartFile multipartFile) throws IOException {
         ResponseMessage responseMessage = videoService.videoUpload(multipartFile, video);
+        //업로드파일 인코딩
+        Video uploadVideo = (Video) responseMessage.getData();
+        videoService.videoEncoding(uploadVideo.getVideoId());
 
         return new ResponseEntity<>(responseMessage,HttpStatus.OK);
     }
@@ -123,17 +126,35 @@ public class VideoController {
     }
 
     @GetMapping("view")
-    public ResponseEntity<ResponseMessage> videoViewPage(@RequestBody Video video){
-        Video videos = videoRepository.findById(video.getVideoId()).get();
+    public ResponseEntity<ResponseMessage> videoViewPage(@RequestParam String videoId){
+        Video videos = videoRepository.findById(videoId).get();
         ResponseMessage responseMessage = new ResponseMessage(videos,"Video를 성공적으로 가져왔습니다");
 
         return new ResponseEntity<>(responseMessage,HttpStatus.OK);
     }
+
     @GetMapping("comments")
-    public ResponseEntity<ResponseMessage> videoComments(@RequestBody Video video, @RequestBody PageRequest pageRequest){
-        List<Comments> commentsList = videoService.getVideoComments(video.getVideoId(),pageRequest.getPage());
+    public ResponseEntity<ResponseMessage> videoComments(@RequestParam String videoId, @RequestParam int page){
+        List<Comments> commentsList = videoService.getVideoComments(videoId,page);
         ResponseMessage responseMessage = new ResponseMessage(commentsList,"해당되는 Comments를 가져왔습니다.");
 
         return new ResponseEntity<>(responseMessage,HttpStatus.OK);
+    }
+    @PostMapping("comments")
+    public ResponseEntity<ResponseMessage> writeComment(@RequestBody Comments comments){
+
+        return new ResponseEntity<>(videoService.addComment(comments),HttpStatus.OK);
+    }
+
+    @PutMapping("comments")
+    public ResponseEntity<ResponseMessage> editComment(@RequestBody Comments comments){
+
+        return new ResponseEntity<>(videoService.editComment(comments),HttpStatus.OK);
+    }
+
+    @DeleteMapping("comments")
+    public ResponseEntity<ResponseMessage> deleteComment(@RequestBody Comments comments){
+
+        return new ResponseEntity<>(videoService.deleteComment(comments),HttpStatus.OK);
     }
 }

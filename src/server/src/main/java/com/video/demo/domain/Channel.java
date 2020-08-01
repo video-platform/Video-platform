@@ -2,6 +2,7 @@ package com.video.demo.domain;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Getter
+@Setter
 @EqualsAndHashCode
 @ToString
 @Table
@@ -25,6 +27,6 @@ public class Channel {
     @Column(unique = true,length = 60)
     private String channelName;
 
-    @Column(unique = true)
+    @Column(nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp channelDate;
 }
