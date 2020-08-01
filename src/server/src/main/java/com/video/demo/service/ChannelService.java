@@ -10,5 +10,6 @@ import java.util.List;
 public interface ChannelService {
     ResponseMessage createChannel(Channel channel);
     ResponseMessage deleteChannel(Channel channel);
-
+    ResponseMessage getChannel(Channel channel);
+    ResponseMessage editChannel(Channel channel);
 }

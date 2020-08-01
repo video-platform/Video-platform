@@ -22,10 +22,25 @@ public class ChannelController {
     @Autowired
     private PlaylistService playlistService;
 
-    @PostMapping("createChannel")
+    @PostMapping("channel")
     public ResponseEntity<ResponseMessage> createChannel(@RequestBody Channel channel){
 
         return new ResponseEntity<>(channelService.createChannel(channel), HttpStatus.OK);
+    }
+    @DeleteMapping("channel")
+    public ResponseEntity<ResponseMessage> deleteChannel(@RequestBody Channel channel){
+
+        return new ResponseEntity<>(channelService.deleteChannel(channel), HttpStatus.OK);
+    }
+    @GetMapping("channel")
+    public ResponseEntity<ResponseMessage> getChannel(@RequestBody Channel channel){
+
+        return new ResponseEntity<>(channelService.getChannel(channel),HttpStatus.OK);
+    }
+    @PutMapping("channel")
+    public  ResponseEntity<ResponseMessage> editChannel(@RequestBody Channel channel){
+
+        return new ResponseEntity<>(channelService.editChannel(channel),HttpStatus.OK);
     }
 
     @PostMapping("createPlayList")

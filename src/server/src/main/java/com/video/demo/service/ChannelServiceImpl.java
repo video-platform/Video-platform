@@ -32,5 +32,20 @@ public class ChannelServiceImpl implements ChannelService {
         return new ResponseMessage(null,"채널이 삭제되었습니다.");
     }
 
+    @Override
+    public ResponseMessage getChannel(Channel channel) {
+        Channel getChannel = channelRepository.getOne(channel.getChannelNo());
 
+        return new ResponseMessage(getChannel,"채널정보를 불러왔습니다.");
+    }
+
+    @Override
+    public ResponseMessage editChannel(Channel channel) {
+        Channel originChannel = channelRepository.getOne(channel.getChannelNo());
+        originChannel.setChannelName(channel.getChannelName());
+        originChannel.setChannelDate(channel.getChannelDate());
+        channelRepository.save(originChannel);
+
+        return new ResponseMessage(originChannel,"채널정보를 수정하였습니다.");
+    }
 }
