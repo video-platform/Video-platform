@@ -132,6 +132,7 @@ public class VideoController {
 
         return new ResponseEntity<>(responseMessage,HttpStatus.OK);
     }
+
     @GetMapping("comments")
     public ResponseEntity<ResponseMessage> videoComments(@RequestParam String videoId, @RequestParam int page){
         List<Comments> commentsList = videoService.getVideoComments(videoId,page);
@@ -143,5 +144,17 @@ public class VideoController {
     public ResponseEntity<ResponseMessage> writeComment(@RequestBody Comments comments){
 
         return new ResponseEntity<>(videoService.addComment(comments),HttpStatus.OK);
+    }
+
+    @PutMapping("comments")
+    public ResponseEntity<ResponseMessage> editComment(@RequestBody Comments comments){
+
+        return new ResponseEntity<>(videoService.editComment(comments),HttpStatus.OK);
+    }
+
+    @DeleteMapping("comments")
+    public ResponseEntity<ResponseMessage> deleteComment(@RequestBody Comments comments){
+
+        return new ResponseEntity<>(videoService.deleteComment(comments),HttpStatus.OK);
     }
 }

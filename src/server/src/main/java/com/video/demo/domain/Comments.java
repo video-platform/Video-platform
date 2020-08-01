@@ -1,15 +1,13 @@
 package com.video.demo.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Table
 @Entity
+@Setter
 @Getter
 @EqualsAndHashCode
 @ToString
@@ -33,6 +31,9 @@ public class Comments {
 
     @Column(nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp commentDate;
+
+    @Column
+    private String commentEdit;
 
     public Comments(Long commentNo, Video video,Member member,String commentContent, Timestamp commentDate) {
         this.commentNo = commentNo;

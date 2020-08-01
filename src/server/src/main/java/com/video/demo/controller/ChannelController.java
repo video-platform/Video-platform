@@ -2,6 +2,7 @@ package com.video.demo.controller;
 
 import com.video.demo.domain.Channel;
 import com.video.demo.domain.Playlist;
+import com.video.demo.domain.Video;
 import com.video.demo.domain.dto.ResponseMessage;
 import com.video.demo.service.ChannelService;
 import com.video.demo.service.PlaylistService;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("channel")
@@ -31,8 +34,9 @@ public class ChannelController {
         return new ResponseEntity<>(playlistService.createPlaylist(playlist),HttpStatus.OK);
     }
 
-    public ResponseEntity<ResponseMessage> addPlayList(){
+    @PostMapping("addPlayList")
+    public ResponseEntity<ResponseMessage> addPlayList(@RequestBody Playlist playlist, @RequestBody List<Video> videoList){
 
-        return null;
+        return new ResponseEntity<>(playlistService.addPlayList(playlist,videoList),HttpStatus.OK);
     }
 }
