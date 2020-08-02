@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat
 class GalleryActivity : AppCompatActivity() {
 
     private val videos = MutableLiveData<List<MediaStoreVideo>>()
+    private lateinit var selectedVideo: MediaStoreVideo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +37,10 @@ class GalleryActivity : AppCompatActivity() {
             view.adapter = galleryAdapter
         }
 
-        galleryAdapter.setVideoClickListener(object : GalleryAdapter.VideoClickListener{
+        galleryAdapter.setVideoClickListener(object : GalleryAdapter.VideoClickListener {
             override fun selectedVideo(video: MediaStoreVideo) {
-                Log.e("jhjh","onClick videoItem"+video)
+                selectedVideo = video
+                Log.e("onclick item", "onClick videoItem -> " + selectedVideo)
             }
         })
 
@@ -51,6 +53,14 @@ class GalleryActivity : AppCompatActivity() {
         back_upload_video.setOnClickListener {
             super.onBackPressed()
         }
+
+        goto_upload_video.setOnClickListener {
+
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun showImages() {
@@ -67,33 +77,35 @@ class GalleryActivity : AppCompatActivity() {
             MediaStore.Video.Media._ID,
             MediaStore.Video.Media.DISPLAY_NAME,
             MediaStore.Video.Media.DURATION
-//            MediaStore.Video.Media.DATE_TAKEN
         )
-//        val selection = "${MediaStore.Video.Media.DATE_TAKEN} >= ?"
+        Log.i(
+            "jhjh",
+            "video info-> Internal Content URI -> " + MediaStore.Video.Media.INTERNAL_CONTENT_URI
+        )
+        Log.i(
+            "jhjh",
+            "video info-> External Content URI -> " + MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+        )
+
         val selectionArgs = arrayOf(
             dateToTimestamp(day = 1, month = 1, year = 1970).toString()
         )
 
-//        val sortOrder = "${MediaStore.Video.Media.DATE_TAKEN} DESC"
         val cursor = contentResolver.query(
             MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
             projection,
             null, // selection
             null, //selectionArgs
-//            sortOrder
-        null
+            null
         )
         cursor?.use {
             val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID)
-//            val dateTakenColumn =
-//                cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_TAKEN)
             val displayNameColumn =
                 cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME)
             val videoDuration =
                 cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION)
             while (cursor.moveToNext()) {
                 val id = cursor.getLong(idColumn)
-//                val dateTaken = Date(cursor.getLong(dateTakenColumn))
                 val displayName = cursor.getString(displayNameColumn)
                 val contentUri = Uri.withAppendedPath(
                     MediaStore.Video.Media.EXTERNAL_CONTENT_URI,

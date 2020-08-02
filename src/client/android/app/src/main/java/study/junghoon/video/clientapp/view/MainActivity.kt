@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     }
 
     private fun openLoginView() {
-        supportFragmentManager.beginTransaction().add(R.id.main_layout, LoginFragment()).addToBackStack(null).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.main_layout, LoginFragment()).addToBackStack(null).commit()
     }
 
     private fun init() {
