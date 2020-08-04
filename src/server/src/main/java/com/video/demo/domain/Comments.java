@@ -5,13 +5,11 @@ import lombok.*;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-@Table
+@Table(name = "comments")
 @Entity
-@Setter
-@Getter
+@Data
 @EqualsAndHashCode
 @ToString
-@NoArgsConstructor
 public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

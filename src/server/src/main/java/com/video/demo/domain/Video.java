@@ -7,7 +7,6 @@ import java.sql.Timestamp;
 
 @Entity
 @Data
-@Builder
 @EqualsAndHashCode
 @ToString
 @Table
@@ -38,5 +37,6 @@ public class Video {
     @Column
     private String videoAgelimit;
 
-
+    public Video() {
+    }
 }

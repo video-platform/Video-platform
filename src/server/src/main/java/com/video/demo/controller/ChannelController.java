@@ -2,6 +2,7 @@ package com.video.demo.controller;
 
 import com.video.demo.domain.Channel;
 import com.video.demo.domain.Playlist;
+import com.video.demo.domain.PlaylistVideo;
 import com.video.demo.domain.Video;
 import com.video.demo.domain.dto.ResponseMessage;
 import com.video.demo.service.ChannelService;
@@ -53,5 +54,11 @@ public class ChannelController {
     public ResponseEntity<ResponseMessage> addPlayList(@RequestBody Playlist playlist, @RequestBody List<Video> videoList){
 
         return new ResponseEntity<>(playlistService.addPlayList(playlist,videoList),HttpStatus.OK);
+    }
+
+    @DeleteMapping("deletePlayList")
+    public ResponseEntity<ResponseMessage> deletePlayList(@RequestBody List<PlaylistVideo> playlistVideoList){
+
+        return new ResponseEntity<>(playlistService.deletePlaylist(playlistVideoList),HttpStatus.OK);
     }
 }

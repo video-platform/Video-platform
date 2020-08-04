@@ -43,9 +43,15 @@ public class VideoServiceImpl implements VideoService{
         byte[] data = multipartFile.getBytes();
         String uploadVideoName = createUploadFileName();
         try {
-            Video saveVideo = Video.builder().videoId(uploadVideoName).channel(video.getChannel()).videoCategory(video.getVideoCategory())
-                    .videoName(multipartFile.getOriginalFilename()).videoContent(video.getVideoContent())
-                    .videoTag(video.getVideoTag()).videoAgelimit(video.getVideoAgelimit()).build();
+            Video saveVideo = new Video();
+            saveVideo.setVideoId(uploadVideoName);
+            saveVideo.setChannel(video.getChannel());
+            saveVideo.setVideoCategory(video.getVideoCategory());
+            saveVideo.setVideoName(multipartFile.getOriginalFilename());
+            saveVideo.setVideoContent(video.getVideoContent());
+            saveVideo.setVideoTag(video.getVideoTag());
+            saveVideo.setVideoAgelimit(video.getVideoAgelimit());
+
             videoRepository.save(saveVideo);
         }catch (EntityExistsException e){
             e.printStackTrace();
@@ -167,7 +173,9 @@ public class VideoServiceImpl implements VideoService{
 
     @Override
     public ResponseMessage editComment(Comments comments) {
+        Comments originComment = commentsRepository.getOne(comments.getCommentNo());
         comments.setCommentEdit("o");
+        comments.setCommentDate(originComment.getCommentDate());
         commentsRepository.save(comments);
 
         return new ResponseMessage(comments,"댓글이 수정되었습니다.");
@@ -175,7 +183,7 @@ public class VideoServiceImpl implements VideoService{
 
     @Override
     public ResponseMessage deleteComment(Comments comments) {
-        commentsRepository.delete(comments);
+        commentsRepository.deleteById(comments.getCommentNo());
 
         return new ResponseMessage(null, "댓글이 삭제되었습니다.");
     }

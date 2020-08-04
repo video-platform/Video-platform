@@ -27,7 +27,7 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     public ResponseMessage deleteChannel(Channel channel) {
-        channelRepository.delete(channel);
+        channelRepository.deleteById(channel.getChannelNo());
 
         return new ResponseMessage(null,"채널이 삭제되었습니다.");
     }
