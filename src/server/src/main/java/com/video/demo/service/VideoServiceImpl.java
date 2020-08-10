@@ -8,6 +8,7 @@ import com.video.demo.domain.Video;
 import com.video.demo.domain.dto.ResponseMessage;
 import com.video.demo.repository.CommentsRepository;
 import com.video.demo.repository.VideoRepository;
+import org.hibernate.PersistentObjectException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 
-import javax.persistence.EntityExistsException;
+import javax.persistence.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 
@@ -37,25 +38,15 @@ public class VideoServiceImpl implements VideoService{
     private CommentsRepository commentsRepository;
     @Autowired
     private VideoRepository videoRepository;
+    @PersistenceUnit
+    private EntityManagerFactory entityManagerFactory;
 
     @Override
     public ResponseMessage videoUpload(MultipartFile multipartFile, Video video) throws IOException {
-        byte[] data = multipartFile.getBytes();
-        String uploadVideoName = createUploadFileName();
-        try {
-            Video saveVideo = new Video();
-            saveVideo.setVideoId(uploadVideoName);
-            saveVideo.setChannel(video.getChannel());
-            saveVideo.setVideoCategory(video.getVideoCategory());
-            saveVideo.setVideoName(multipartFile.getOriginalFilename());
-            saveVideo.setVideoContent(video.getVideoContent());
-            saveVideo.setVideoTag(video.getVideoTag());
-            saveVideo.setVideoAgelimit(video.getVideoAgelimit());
 
-            videoRepository.save(saveVideo);
-        }catch (EntityExistsException e){
-            e.printStackTrace();
-        }
+        String uploadVideoName = saveVideoInfo(video,multipartFile.getOriginalFilename());
+
+        byte[] data = multipartFile.getBytes();
         FileOutputStream fileOutputStream = new FileOutputStream(VIDEO_PATH+"/"+uploadVideoName);
         fileOutputStream.write(data);
         fileOutputStream.close();
@@ -63,6 +54,34 @@ public class VideoServiceImpl implements VideoService{
         Video saveVideo = videoRepository.getOne(uploadVideoName);
 
         return new ResponseMessage(saveVideo,"파일 업로드가 성공적으로 완료 되었습니다.");
+    }
+
+    public String saveVideoInfo(Video video, String originName){
+        while (true){
+            try {
+                String uploadVideoName = createUploadFileName();
+                Video saveVideo = new Video();
+                saveVideo.setVideoId(uploadVideoName);
+                saveVideo.setChannel(video.getChannel());
+                saveVideo.setVideoCategory(video.getVideoCategory());
+                saveVideo.setVideoName(originName);
+                saveVideo.setVideoContent(video.getVideoContent());
+                saveVideo.setVideoTag(video.getVideoTag());
+                saveVideo.setVideoAgelimit(video.getVideoAgelimit());
+
+                EntityManager entityManager = entityManagerFactory.createEntityManager();
+                entityManager.getTransaction().begin();
+
+                entityManager.persist(saveVideo);
+                entityManager.flush();
+                entityManager.close();
+
+                return uploadVideoName;
+            }catch (PersistentObjectException e){
+                continue;
+            }
+
+        }
     }
 
     //파일 ID 생성
