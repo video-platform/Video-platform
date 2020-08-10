@@ -158,18 +158,18 @@ public class VideoServiceImpl implements VideoService{
     }
 
     @Override
-    public boolean videoViewerCheck(String viewerIp,String videoId) {
+    public void videoViewerCheck(String viewerIp,String videoId) {
         ValueOperations<String,Object> valueOperations = redisTemplate.opsForValue();
         if (!redisTemplate.hasKey(viewerIp)){
             valueOperations.increment(videoId);
             valueOperations.set(viewerIp,1,10800);
             int videoCount = (int) valueOperations.get(videoId);
             if(videoCount==500){
-                //Database에 조회수 저장.
-                return true;
+                Video video = videoRepository.getOne(videoId);
+                video.setVideoViewCount(video.getVideoViewCount()+videoCount);
             }
         }
-        return false;
+
     }
 
     static final int pageSize = 10;
