@@ -14,7 +14,7 @@ public class Playlist {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
-    private Long PlaylistNo;
+    private Long playlistNo;
 
     @ManyToOne
     @JoinColumn(name = "channel_no")
