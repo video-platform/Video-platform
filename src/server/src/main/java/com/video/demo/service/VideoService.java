@@ -12,6 +12,7 @@ import java.util.List;
 
 public interface VideoService {
     ResponseMessage videoUpload(MultipartFile multipartFile, Video video) throws IOException;
+    ResponseMessage videoView(String videoId);
     void videoEncoding(String videoId);
     String getViewerIp(HttpServletRequest request);
     void videoViewerCheck(String viewerIp,String videoId);

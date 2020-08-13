@@ -55,7 +55,7 @@ public class VideoServiceImpl implements VideoService{
 
         return new ResponseMessage(saveVideo,"파일 업로드가 성공적으로 완료 되었습니다.");
     }
-
+    //DB video 정보 저장(VideoId 중복체크 후 저장)
     public String saveVideoInfo(Video video, String originName){
         while (true){
             try {
@@ -104,6 +104,12 @@ public class VideoServiceImpl implements VideoService{
         return result;
     }
 
+    @Override
+    public ResponseMessage videoView(String videoId) {
+        Video videos = videoRepository.findById(videoId).get();
+
+        return new ResponseMessage(videos,"Video를 성공적으로 가져왔습니다");
+    }
 
     @Override
     public void videoEncoding(String videoId){
