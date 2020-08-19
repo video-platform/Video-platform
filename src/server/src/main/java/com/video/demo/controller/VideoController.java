@@ -36,8 +36,6 @@ public class VideoController {
     private VideoService videoService;
 
     @Autowired
-    private VideoRepository videoRepository;
-    @Autowired
     private CommentsRepository commentsRepository;
 
     @GetMapping("/upload")
@@ -126,11 +124,12 @@ public class VideoController {
     }
 
     @GetMapping("view")
-    public ResponseEntity<ResponseMessage> videoViewPage(@RequestParam String videoId){
-        Video videos = videoRepository.findById(videoId).get();
-        ResponseMessage responseMessage = new ResponseMessage(videos,"Video를 성공적으로 가져왔습니다");
+    public ResponseEntity<ResponseMessage> videoViewPage(@RequestParam String videoId,HttpServletRequest request){
 
-        return new ResponseEntity<>(responseMessage,HttpStatus.OK);
+        String viewerIp = videoService.getViewerIp(request);
+        videoService.videoViewerCheck(viewerIp,videoId);
+
+        return new ResponseEntity<>(videoService.videoView(videoId),HttpStatus.OK);
     }
 
     @GetMapping("comments")
