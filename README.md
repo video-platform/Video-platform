@@ -2,11 +2,11 @@
 
 ![ERD_Image](./image/ERD_Image.png)
 
-##API Document
+## API Document
 
-###Model
+### Model
 
-####Member
+#### Member
 ```javascript
 Member : {
             "memberEmail": "string",
@@ -17,7 +17,7 @@ Member : {
           }
 ```
 
-####Channel
+#### Channel
 ```javascript
 Channel : {
     "channelDate": {},
@@ -28,7 +28,7 @@ Channel : {
 ```
 
 
-####Video
+#### Video
 ```javascript
 Video : {
           "channel": {},
@@ -45,7 +45,7 @@ Video : {
         }
 ```
 
-####Comments
+#### Comments
 ```javascript
 {
   "commentContent": "string",
@@ -57,7 +57,7 @@ Video : {
 }
 ```
 
-####Playlist
+#### Playlist
 ```javascript
 {
     "channel" :{},
@@ -67,7 +67,8 @@ Video : {
 }
 ```
 
-###Controller
+### Controller
+
 | Category | Summary | Method | URI | Params | Request Body | Success Code | Response Body |
 | :---: | :---: | :---: | :---: | --- | --- | --- | --- |
 |비디오|비디오 업로드|Post| video/upload | MultipartFile(param_name = video) | channelNo = Long <br/> videoCategoryNo = int <br/> videoName = String <br/> videoContent = String <br/> videoUploadDate = TimeStamp <br/> videoTag = String <br/> videoAgelimit = String || [Video](#Video) |
