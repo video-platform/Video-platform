@@ -12,9 +12,10 @@ import java.util.List;
 
 public interface VideoService {
     ResponseMessage videoUpload(MultipartFile multipartFile, Video video) throws IOException;
+    ResponseMessage videoView(String videoId);
     void videoEncoding(String videoId);
     String getViewerIp(HttpServletRequest request);
-    boolean videoViewerCheck(String viewerIp,String videoId);
+    void videoViewerCheck(String viewerIp,String videoId);
     List<Comments> getVideoComments(String videoId, int page);
     ResponseMessage addComment(Comments comments);
     ResponseMessage editComment(Comments comments);

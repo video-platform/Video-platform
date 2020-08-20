@@ -21,8 +21,8 @@ public class Playlist {
     private Channel channel;
 
     @Column
-    private String PlaylistName;
+    private String playlistName;
 
     @Column(nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Timestamp PlaylistUpdate;
+    private Timestamp playlistUpdate;
 }

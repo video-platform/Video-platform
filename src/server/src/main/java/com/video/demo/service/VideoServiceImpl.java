@@ -55,7 +55,7 @@ public class VideoServiceImpl implements VideoService{
 
         return new ResponseMessage(saveVideo,"파일 업로드가 성공적으로 완료 되었습니다.");
     }
-
+    //DB video 정보 저장(VideoId 중복체크 후 저장)
     public String saveVideoInfo(Video video, String originName){
         while (true){
             try {
@@ -104,6 +104,12 @@ public class VideoServiceImpl implements VideoService{
         return result;
     }
 
+    @Override
+    public ResponseMessage videoView(String videoId) {
+        Video videos = videoRepository.findById(videoId).get();
+
+        return new ResponseMessage(videos,"Video를 성공적으로 가져왔습니다");
+    }
 
     @Override
     public void videoEncoding(String videoId){
@@ -158,18 +164,18 @@ public class VideoServiceImpl implements VideoService{
     }
 
     @Override
-    public boolean videoViewerCheck(String viewerIp,String videoId) {
+    public void videoViewerCheck(String viewerIp,String videoId) {
         ValueOperations<String,Object> valueOperations = redisTemplate.opsForValue();
         if (!redisTemplate.hasKey(viewerIp)){
             valueOperations.increment(videoId);
             valueOperations.set(viewerIp,1,10800);
             int videoCount = (int) valueOperations.get(videoId);
             if(videoCount==500){
-                //Database에 조회수 저장.
-                return true;
+                Video video = videoRepository.getOne(videoId);
+                video.setVideoViewCount(video.getVideoViewCount()+videoCount);
             }
         }
-        return false;
+
     }
 
     static final int pageSize = 10;
@@ -193,11 +199,11 @@ public class VideoServiceImpl implements VideoService{
     @Override
     public ResponseMessage editComment(Comments comments) {
         Comments originComment = commentsRepository.getOne(comments.getCommentNo());
-        comments.setCommentEdit("o");
-        comments.setCommentDate(originComment.getCommentDate());
-        commentsRepository.save(comments);
+        originComment.setCommentEdit("o");
+        originComment.setCommentContent(comments.getCommentContent());
+        commentsRepository.save(originComment);
 
-        return new ResponseMessage(comments,"댓글이 수정되었습니다.");
+        return new ResponseMessage(originComment,"댓글이 수정되었습니다.");
     }
 
     @Override

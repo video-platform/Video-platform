@@ -37,6 +37,9 @@ public class Video {
     @Column
     private String videoAgelimit;
 
+    @Column
+    private int videoViewCount;
+
     public Video() {
     }
 }
