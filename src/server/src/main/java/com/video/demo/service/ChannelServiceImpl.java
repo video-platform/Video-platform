@@ -43,7 +43,7 @@ public class ChannelServiceImpl implements ChannelService {
     public ResponseMessage editChannel(Channel channel) {
         Channel originChannel = channelRepository.getOne(channel.getChannelNo());
         originChannel.setChannelName(channel.getChannelName());
-        originChannel.setChannelDate(channel.getChannelDate());
+
         channelRepository.save(originChannel);
 
         return new ResponseMessage(originChannel,"채널정보를 수정하였습니다.");
