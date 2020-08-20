@@ -199,11 +199,11 @@ public class VideoServiceImpl implements VideoService{
     @Override
     public ResponseMessage editComment(Comments comments) {
         Comments originComment = commentsRepository.getOne(comments.getCommentNo());
-        comments.setCommentEdit("o");
-        comments.setCommentDate(originComment.getCommentDate());
-        commentsRepository.save(comments);
+        originComment.setCommentEdit("o");
+        originComment.setCommentContent(comments.getCommentContent());
+        commentsRepository.save(originComment);
 
-        return new ResponseMessage(comments,"댓글이 수정되었습니다.");
+        return new ResponseMessage(originComment,"댓글이 수정되었습니다.");
     }
 
     @Override
