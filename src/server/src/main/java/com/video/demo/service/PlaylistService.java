@@ -11,9 +11,10 @@ import java.util.List;
 public interface PlaylistService {
     ResponseMessage createPlaylist(Playlist playlist);
     ResponseMessage editPlayList(Playlist playlist);
+    ResponseMessage deletePlaylist(Playlist playlist);
     ResponseMessage getPlayList(Channel channel);
-    ResponseMessage addPlayList(Playlist playlist, List<Video> videoList);
-    ResponseMessage deletePlaylist(List<PlaylistVideo> playlistVideoList);
+    ResponseMessage addPlayListVideo(Playlist playlist, List<Video> videoList);
+    ResponseMessage deletePlaylistVideo(List<PlaylistVideo> playlistVideoList);
     ResponseMessage getPlaylistVideo(Playlist playlist);
 
 }

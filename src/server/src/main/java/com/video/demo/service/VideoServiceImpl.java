@@ -178,6 +178,23 @@ public class VideoServiceImpl implements VideoService{
 
     }
 
+    @Override
+    public ResponseMessage editVideo(Video video) {
+        Video originVideo = videoRepository.getOne(video.getVideoId());
+        originVideo.setVideoName(video.getVideoName());
+        originVideo.setVideoContent(video.getVideoContent());
+
+        videoRepository.save(originVideo);
+        return new ResponseMessage(originVideo,"영상 수정이 완료되었습니다.");
+    }
+
+    @Override
+    public ResponseMessage deleteVideo(Video video) {
+        videoRepository.deleteById(video.getVideoId());
+
+        return new ResponseMessage(null,"영상 삭제가 완료되었습니다.");
+    }
+
     static final int pageSize = 10;
 
     @Override
