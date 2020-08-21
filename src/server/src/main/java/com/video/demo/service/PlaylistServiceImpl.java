@@ -11,6 +11,7 @@ import com.video.demo.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -33,10 +34,18 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Override
     public ResponseMessage editPlayList(Playlist playlist) {
         Playlist originPlaylist = playlistRepository.getOne(playlist.getPlaylistNo());
-        playlist.setChannel(originPlaylist.getChannel());
-        playlistRepository.save(playlist);
+        originPlaylist.setPlaylistName(playlist.getPlaylistName());
+        originPlaylist.setPlaylistUpdate(null);
+        playlistRepository.save(originPlaylist);
 
-        return new ResponseMessage(playlist,"플레이리스트를 수정하였습니다.");
+        return new ResponseMessage(originPlaylist,"플레이리스트를 수정하였습니다.");
+    }
+
+    @Override
+    public ResponseMessage deletePlaylist(Playlist playlist) {
+        playlistRepository.deleteById(playlist.getPlaylistNo());
+
+        return new ResponseMessage(null,"플레이리스트를 삭제하였습니다.");
     }
 
     @Override
@@ -47,7 +56,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public ResponseMessage addPlayList(Playlist playlist, List<Video> videoList) {
+    public ResponseMessage addPlayListVideo(Playlist playlist, List<Video> videoList) {
         for (Video video : videoList){
             PlaylistVideo playlistVideo = new PlaylistVideo();
             playlistVideo.setPlaylist(playlistRepository.getOne(playlist.getPlaylistNo()));
@@ -60,7 +69,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public ResponseMessage deletePlaylist(List<PlaylistVideo> playlistVideoList) {
+    public ResponseMessage deletePlaylistVideo(List<PlaylistVideo> playlistVideoList) {
         for (PlaylistVideo playlistVideo : playlistVideoList){
             playlistVideoRepository.delete(playlistVideo);
         }
