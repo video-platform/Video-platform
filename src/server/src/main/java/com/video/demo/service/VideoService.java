@@ -16,6 +16,8 @@ public interface VideoService {
     void videoEncoding(String videoId);
     String getViewerIp(HttpServletRequest request);
     void videoViewerCheck(String viewerIp,String videoId);
+    ResponseMessage editVideo(Video video);
+    ResponseMessage deleteVideo(Video video);
     List<Comments> getVideoComments(String videoId, int page);
     ResponseMessage addComment(Comments comments);
     ResponseMessage editComment(Comments comments);

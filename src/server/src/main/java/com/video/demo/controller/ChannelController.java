@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("channel")
+@RequestMapping("/channel")
 public class ChannelController {
 
     @Autowired
@@ -23,42 +23,67 @@ public class ChannelController {
     @Autowired
     private PlaylistService playlistService;
 
-    @PostMapping("channel")
+    @PostMapping("/channel")
     public ResponseEntity<ResponseMessage> createChannel(@RequestBody Channel channel){
 
         return new ResponseEntity<>(channelService.createChannel(channel), HttpStatus.OK);
     }
-    @DeleteMapping("channel")
+    @DeleteMapping("/channel")
     public ResponseEntity<ResponseMessage> deleteChannel(@RequestBody Channel channel){
 
         return new ResponseEntity<>(channelService.deleteChannel(channel), HttpStatus.OK);
     }
-    @GetMapping("channel")
+    @GetMapping("/channel")
     public ResponseEntity<ResponseMessage> getChannel(@RequestBody Channel channel){
 
         return new ResponseEntity<>(channelService.getChannel(channel),HttpStatus.OK);
     }
-    @PutMapping("channel")
+    @PutMapping("/channel")
     public  ResponseEntity<ResponseMessage> editChannel(@RequestBody Channel channel){
 
         return new ResponseEntity<>(channelService.editChannel(channel),HttpStatus.OK);
     }
 
-    @PostMapping("createPlayList")
+    @PostMapping("/createPlayList")
     public ResponseEntity<ResponseMessage> createPlayList(@RequestBody Playlist playlist){
 
         return new ResponseEntity<>(playlistService.createPlaylist(playlist),HttpStatus.OK);
     }
 
-    @PostMapping("addPlayList")
-    public ResponseEntity<ResponseMessage> addPlayList(@RequestBody Playlist playlist, @RequestBody List<Video> videoList){
+    @PostMapping("/editPlayList")
+    public ResponseEntity<ResponseMessage> editPlaylist(@RequestBody Playlist playlist){
 
-        return new ResponseEntity<>(playlistService.addPlayList(playlist,videoList),HttpStatus.OK);
+        return new ResponseEntity<>(playlistService.editPlayList(playlist), HttpStatus.OK);
     }
 
-    @DeleteMapping("deletePlayList")
-    public ResponseEntity<ResponseMessage> deletePlayList(@RequestBody List<PlaylistVideo> playlistVideoList){
+    @GetMapping("/getPlayList")
+    public ResponseEntity<ResponseMessage> getPlaylist(@RequestBody Channel channel){
 
-        return new ResponseEntity<>(playlistService.deletePlaylist(playlistVideoList),HttpStatus.OK);
+        return new ResponseEntity<>(playlistService.getPlayList(channel), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deletePlayList")
+    public ResponseEntity<ResponseMessage> deletePlayList(@RequestBody Playlist playlist){
+
+        return new ResponseEntity<>(playlistService.deletePlaylist(playlist),HttpStatus.OK);
+    }
+
+    @GetMapping("/getPlayListVideo")
+    public ResponseEntity<ResponseMessage> getPlaylistVideo(@RequestBody Playlist playlist){
+
+        return new ResponseEntity<>(playlistService.getPlaylistVideo(playlist),HttpStatus.OK);
+    }
+
+    @PostMapping("/addPlayListVideo")
+    public ResponseEntity<ResponseMessage> addPlayList(@RequestBody Playlist playlist, @RequestBody List<Video> videoList){
+
+        return new ResponseEntity<>(playlistService.addPlayListVideo(playlist,videoList),HttpStatus.OK);
+    }
+
+    //API 문서 업로드 필요
+    @DeleteMapping("/deletePlayListVideo")
+    public ResponseEntity<ResponseMessage> deletePlayListVideo(@RequestBody List<PlaylistVideo> playlistVideoList){
+
+        return new ResponseEntity<>(playlistService.deletePlaylistVideo(playlistVideoList),HttpStatus.OK);
     }
 }
